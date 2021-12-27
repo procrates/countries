@@ -7,3 +7,5 @@ nuxt.d.ts
 
 # Design files
 rest-countries-api-with-color-theme-switcher-master
+# Local Netlify folder
+.netlify
