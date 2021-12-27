@@ -4,3 +4,6 @@ node_modules
 nuxt.d.ts
 .output
 .env
+
+# Design files
+rest-countries-api-with-color-theme-switcher-master
