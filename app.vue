@@ -33,7 +33,7 @@
     </header>
     <NuxtPage />
     <footer class="mt-20">
-      <Attribution />
+      <MoleculeAttribution />
     </footer>
   </div>
 </template>
