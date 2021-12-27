@@ -94,9 +94,12 @@
                                 <ul class="flex flex-row flex-wrap">
                                     <li
                                         v-for="country in borderCountries"
-                                        class="px-5 py-1 mt-3 mr-2 rounded-md drop-shadow-lg shadow-mode-dark-dark-blue bg-mode-dark-dark-blue"
+                                        class="px-5 py-2 mt-3 mr-4 rounded-md shadow-sm dark:shadow-mode-light-dark-gray shadow-mode-dark-dark-blue dark:bg-mode-dark-dark-blue"
                                     >
-                                        <NuxtLink :to="country?.name">{{ country?.name }}</NuxtLink>
+                                        <NuxtLink
+                                            :to="country?.name"
+                                            class="w-full h-full"
+                                        >{{ country?.name }}</NuxtLink>
                                     </li>
                                 </ul>
                             </dd>
