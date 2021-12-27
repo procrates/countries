@@ -114,14 +114,7 @@
 const route = useRoute()
 const country = route.params.country.split('-').join(' ')
 const { data: item, refresh } = await useFetch(`https://restcountries.com/v2/name/${country}?fields=name,flags,nativeName,population,region,subregion,capital,topLevelDomain,currencies,languages,borders`)
-
-console.log(item.value[0].borders);
 const borders = item.value[0].borders.toString()
-console.log(borders);
-
 const { data: borderCountries } = await useFetch(`https://restcountries.com/v2/alpha?codes=${borders}`)
-console.log(borderCountries.value);
-
 const formatNumber = (number) => new Intl.NumberFormat().format(number)
-
 </script>

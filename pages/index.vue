@@ -22,25 +22,18 @@ const loading = useLoading()
 const countrySearchInput = useCountrySearch()
 const continentFilter = useContinentFilter()
 const filterType = useFilterType()
-console.log(data.value);
-
 
 const filtered = (search, filter) => {
     switch (filterType.value) {
         case 'search':
             if (search === '') return data.value
             if (search) {
-                console.log('search');
-
                 function filterItems(arr, query) {
                     return arr.filter((el) => {
                         return el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
                     })
                 }
                 const found = filterItems(data.value, search)
-                console.log(found);
-
-
                 if (found) {
                     loading.value = false
                     return found
@@ -50,8 +43,6 @@ const filtered = (search, filter) => {
         case 'filter':
             if (filter) {
                 const found = data.value.filter(c => c.region === filter)
-
-
                 if (found) {
                     return found
                 }
@@ -61,8 +52,5 @@ const filtered = (search, filter) => {
             loading.value = false
             return data.value
     }
-
-    //watch([continentFilter, countrySearchInput], () => filtered(countrySearchInput, continentFilter))
-
 }
 </script>

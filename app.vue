@@ -39,7 +39,6 @@
 </template>
 <script lang="ts" setup>
 import './assets/css/tailwind.css'
-import Attribution from './components/Molecule/Attribution.vue'
 const moonSun = ref(true)
 const darkToggle = () => {
   localStorage.theme = localStorage.theme === 'dark' ? 'light' : 'dark'
