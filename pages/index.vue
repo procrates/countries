@@ -7,6 +7,7 @@
         </div>
         <section class="gap-10 desktop:grid desktop:grid-cols-4 desktop:grid-flow-row-dense">
             <OrganismCard
+                lazy
                 v-if="filtered(countrySearchInput, continentFilter)"
                 v-for="(item,index) in filtered(countrySearchInput, continentFilter)"
                 :key="index"
@@ -17,7 +18,7 @@
     </main>
 </template>
 <script setup lang="ts">
-const { data, refresh } = await useAsyncData('countries', () => $fetch('/api/countries'))
+const { data, refresh } = await useLazyAsyncData('countries', () => $fetch('/api/countries'))
 const loading = useLoading()
 const countrySearchInput = useCountrySearch()
 const continentFilter = useContinentFilter()
