@@ -1,17 +1,17 @@
 <template>
     <NuxtLink
-        :to="`/${item?.name?.toLowerCase().split(' ').join('-')}`"
+        :to="`/${item.name.common.toLowerCase().split(' ').join('-')}`"
         class="flex flex-col mt-5 rounded-lg shadow-xl desktop:justify-between desktop:h-full desktop:mt-auto bg-neutral-white"
     >
         <div class="rounded-t-lg desktop:h-full desktop:overflow-hidden">
             <img
                 :src="item.flags.svg"
                 :alt="`${item.name} flag`"
-                class="object-contain rounded-t-lg"
+                class="block object-fill w-full align-top rounded-t-lg min-h-fit"
             />
         </div>
         <div class="px-5 py-8">
-            <h1 class="mb-5 text-2xl font-semibold">{{ item.name }}</h1>
+            <h1 class="mb-5 text-2xl font-semibold">{{ item.name.common }}</h1>
             <dl>
                 <div class="flex space-x-1">
                     <dt class="font-semibold">Population:</dt>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex space-x-1">
                     <dt class="font-semibold">Capital:</dt>
-                    <dd v-if="item.capital">{{ item.capital[0] }}</dd>
+                    <dd v-if="item.capital[0]">{{ item.capital[0] }}</dd>
                     <dd v-else>No capital...</dd>
                 </div>
             </dl>

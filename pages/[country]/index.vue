@@ -21,39 +21,43 @@
         </div>
         <div class="desktop:flex desktop:items-center">
             <img
-                :src="item[0].flags?.svg"
-                :alt="`${item[0].name} flag`"
+                :src="item.flags.svg"
+                :alt="`${item.name.common} flag`"
                 class="object-cover w-full h-full mt-10 desktop:w-1/2"
             />
             <div class="desktop:ml-20">
-                <h1 class="my-5 text-2xl font-semibold">{{ item[0].name }}</h1>
+                <h1 class="my-5 text-2xl font-semibold">{{ item.name.common }}</h1>
                 <dl class="flex flex-col space-y-3">
                     <div class="desktop:flex">
                         <div>
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Native name:</dt>
-                                <dd class="text-mode-light-dark-gray">{{ item[0]?.nativeName }}</dd>
+                                <dd class="text-mode-light-dark-gray">
+                                    <ul>
+                                        <li v-for="item in item.name.native">{{ item.official }}</li>
+                                    </ul>
+                                </dd>
                             </div>
 
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Population:</dt>
                                 <dd
                                     class="text-mode-light-dark-gray"
-                                >{{ formatNumber(item[0].population) }}</dd>
+                                >{{ formatNumber(item.population) }}</dd>
                             </div>
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Region:</dt>
-                                <dd class="text-mode-light-dark-gray">{{ item[0]?.region }}</dd>
+                                <dd class="text-mode-light-dark-gray">{{ item.region }}</dd>
                             </div>
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Sub region:</dt>
-                                <dd class="text-mode-light-dark-gray">{{ item[0].subregion }}</dd>
+                                <dd class="text-mode-light-dark-gray">{{ item.subregion }}</dd>
                             </div>
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Capital:</dt>
-                                <dd class="text-mode-light-dark-gray" v-if="item[0].capital">
+                                <dd class="text-mode-light-dark-gray" v-if="item.capitals">
                                     <ul class="flex">
-                                        <li v-for="cap in item[0].capital">{{ cap }}</li>
+                                        <li v-for="cap in item.capitals">{{ cap }}</li>
                                     </ul>
                                 </dd>
                                 <dd class="text-mode-light-dark-gray" v-else>No capital...</dd>
@@ -62,15 +66,19 @@
                         <div class="flex flex-col ml-10 space-y-3">
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Top level domain:</dt>
-                                <dd
-                                    class="text-mode-light-dark-gray"
-                                >{{ item[0].topLevelDomain[0] }}</dd>
+                                <dd class="text-mode-light-dark-gray">{{ item.tld[0] }}</dd>
                             </div>
                             <div class="flex space-x-1">
                                 <dt class="font-semibold">Currencies:</dt>
                                 <dd class="text-mode-light-dark-gray">
                                     <ul>
-                                        <li v-for="cur in item[0].currencies">{{ cur.name }}</li>
+                                        <li v-for="(curr, index) in item.currencies" :key="index">
+                                            <ul>
+                                                <li
+                                                    v-for="item in curr"
+                                                >{{ item.name }} ({{ item.symbol }})</li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </dd>
                             </div>
@@ -78,10 +86,11 @@
                                 <dt class="font-semibold">Languages:</dt>
                                 <dd class="text-mode-light-dark-gray">
                                     <ul class="flex">
-                                        <li
-                                            v-for="(lang,key,index) in item[0].languages"
-                                            class="mr-1"
-                                        >{{ lang.name }}</li>
+                                        <li v-for="(lang,key,index) in item.languages" class="mr-1">
+                                            <ul>
+                                                <li v-for="item in lang">{{ item }}</li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </dd>
                             </div>
@@ -97,9 +106,9 @@
                                         class="px-5 py-2 mt-3 mr-4 rounded-md shadow-sm dark:shadow-mode-light-dark-gray shadow-mode-dark-dark-blue dark:bg-mode-dark-dark-blue"
                                     >
                                         <NuxtLink
-                                            :to="country?.name"
+                                            :to="country.name.common.toLowerCase()"
                                             class="w-full h-full"
-                                        >{{ country?.name }}</NuxtLink>
+                                        >{{ country.name.common }}</NuxtLink>
                                     </li>
                                 </ul>
                             </dd>
@@ -113,8 +122,46 @@
 <script setup lang="ts">
 const route = useRoute()
 const country = route.params.country.split('-').join(' ')
-const { data: item, refresh } = await useFetch(`https://restcountries.com/v2/name/${country}?fields=name,flags,nativeName,population,region,subregion,capital,topLevelDomain,currencies,languages,borders`)
-const borders = item.value[0].borders.toString()
-const { data: borderCountries } = await useFetch(`https://restcountries.com/v2/alpha?codes=${borders}`)
+
+const { data: item, refresh } = await useAsyncData('country', async () => {
+
+    const res = await $fetch(`https://restcountries.com/v3.1/name/${country}?fields=name,flags,nativeName,population,region,subregion,capital,tld,currencies,languages,borders`)
+    const item = res[0]
+    console.log('format', [item.languages]);
+    const formatted = {
+        name: {
+            common: item.name.common,
+            official: item.name.official,
+            native: item.name.nativeName
+        },
+        capitals: [
+            ...item.capital
+        ],
+        population: item.population,
+        region: item.region,
+        subregion: item.subregion,
+        borders: item.borders,
+        languages: [
+            item.languages
+        ],
+        currencies: [
+            item.currencies
+        ],
+        tld: item.tld,
+        flags: {
+            ...item.flags
+        }
+    }
+
+
+    console.log('format', formatted);
+
+    return formatted
+})
+
+const borders = item.value.borders.toString()
+console.log(borders);
+
+const { data: borderCountries } = await useFetch(`https://restcountries.com/v3.1/alpha?codes=${borders}`)
 const formatNumber = (number) => new Intl.NumberFormat().format(number)
 </script>

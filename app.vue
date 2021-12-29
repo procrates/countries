@@ -6,7 +6,7 @@
       class="flex justify-between px-5 py-8 shadow-lg bg-slate-50 dark:bg-mode-dark-dark-blue"
     >
       <NuxtLink to="/" class="font-bold">Where in the world?</NuxtLink>
-      <button @click="darkToggle" class="flex items-center">
+      <button @click="darkToggle" class="flex items-center" aria-label="Toggle color">
         <svg
           v-show="moonSun"
           xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +39,19 @@
 </template>
 <script lang="ts" setup>
 import './assets/css/tailwind.css'
+useMeta({
+  title: "Countries",
+  htmlAttrs: {
+    lang: 'en',
+    amp: true
+  },
+  meta: [
+    {
+      name: "description",
+      content: "View, search and filter the worlds countries."
+    }
+  ]
+})
 const moonSun = ref(true)
 const darkToggle = () => {
   localStorage.theme = localStorage.theme === 'dark' ? 'light' : 'dark'

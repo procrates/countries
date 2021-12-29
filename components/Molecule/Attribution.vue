@@ -4,6 +4,7 @@
         <a
             href="https://www.frontendmentor.io?ref=challenge"
             target="_blank"
+            rel="noreferrer"
             class="dark:text-mode-light-very-light-gray"
         >Frontend Mentor</a>.
         Coded by
