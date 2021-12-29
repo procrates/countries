@@ -11,7 +11,6 @@
                 enter-to-class="opacity-100"
             >
                 <OrganismCard
-                    lazy
                     v-if="list"
                     v-for="(item,index) in list"
                     :key="`${index}-${item.name}`"

@@ -42,8 +42,7 @@ import './assets/css/tailwind.css'
 useMeta({
   title: "Countries",
   htmlAttrs: {
-    lang: 'en',
-    amp: true
+    lang: 'en'
   },
   meta: [
     {

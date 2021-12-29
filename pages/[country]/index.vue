@@ -100,17 +100,18 @@
                         <div class="flex flex-col mt-10">
                             <dt class="font-semibold">Borders:</dt>
                             <dd class="text-mode-light-dark-gray">
-                                <ul class="flex flex-row flex-wrap">
+                                <ul class="flex flex-row flex-wrap" v-if="borderCountries">
                                     <li
                                         v-for="country in borderCountries"
                                         class="px-5 py-2 mt-3 mr-4 rounded-md shadow-sm dark:shadow-mode-light-dark-gray shadow-mode-dark-dark-blue dark:bg-mode-dark-dark-blue"
                                     >
                                         <NuxtLink
-                                            :to="country.name.common.toLowerCase()"
+                                            :to="country?.name.common.toLowerCase()"
                                             class="w-full h-full"
-                                        >{{ country.name.common }}</NuxtLink>
+                                        >{{ country?.name.common }}</NuxtLink>
                                     </li>
                                 </ul>
+                                <div v-else>No border countries</div>
                             </dd>
                         </div>
                     </div>
@@ -160,8 +161,6 @@ const { data: item, refresh } = await useAsyncData('country', async () => {
 })
 
 const borders = item.value.borders.toString()
-console.log(borders);
-
 const { data: borderCountries } = await useFetch(`https://restcountries.com/v3.1/alpha?codes=${borders}`)
 const formatNumber = (number) => new Intl.NumberFormat().format(number)
 </script>
